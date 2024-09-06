@@ -19,11 +19,14 @@ const ManageDoctors = () => {
     queryKey: ['doctors'],
     queryFn: async () => {
       try {
-        const res = await fetch('http://localhost:8080/doctors', {
-          headers: {
-            authorization: `bearer ${localStorage.getItem('accessToken')}`,
-          },
-        });
+        const res = await fetch(
+          'https://dental-portal-nine.vercel.app/doctors',
+          {
+            headers: {
+              authorization: `bearer ${localStorage.getItem('accessToken')}`,
+            },
+          }
+        );
         const data = await res.json();
         return data;
       } catch (error) {}
@@ -31,7 +34,7 @@ const ManageDoctors = () => {
   });
 
   const handleDeleteDoctor = doctor => {
-    fetch(`http://localhost:8080/doctors/${doctor._id}`, {
+    fetch(`https://dental-portal-nine.vercel.app/doctors/${doctor._id}`, {
       method: 'DELETE',
       headers: {
         authorization: `bearer ${localStorage.getItem('accessToken')}`,

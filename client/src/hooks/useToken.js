@@ -4,7 +4,7 @@ const useToken = email => {
   const [token, setToken] = useState('');
   useEffect(() => {
     if (email) {
-      fetch(`http://localhost:8080/jwt?email=${email}`)
+      fetch(`https://dental-portal-nine.vercel.app/jwt?email=${email}`)
         .then(res => res.json())
         .then(data => {
           if (data.accessToken) {

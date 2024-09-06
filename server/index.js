@@ -24,53 +24,6 @@ const client = new MongoClient(uri, {
   },
 });
 
-function sendBookingEmail(booking) {
-  const { email, treatment, appointmentDate, slot } = booking;
-
-  const auth = {
-    auth: {
-      api_key: process.env.EMAIL_SEND_KEY,
-      domain: process.env.EMAIL_SEND_DOMAIN,
-    },
-  };
-
-  const transporter = nodemailer.createTransport(mg(auth));
-
-  // let transporter = nodemailer.createTransport({
-  //     host: 'smtp.sendgrid.net',
-  //     port: 587,
-  //     auth: {
-  //         user: "apikey",
-  //         pass: process.env.SENDGRID_API_KEY
-  //     }
-  // });
-  console.log('sending email', email);
-  transporter.sendMail(
-    {
-      from: 'jhankar.mahbub2@gmail.com', // verified sender email
-      to: email || 'jhankar.mahbub2@gmail.com', // recipient email
-      subject: `Your appointment for ${treatment} is confirmed`, // Subject line
-      text: 'Hello world!', // plain text body
-      html: `
-        <h3>Your appointment is confirmed</h3>
-        <div>
-            <p>Your appointment for treatment: ${treatment}</p>
-            <p>Please visit us on ${appointmentDate} at ${slot}</p>
-            <p>Thanks from Doctors Portal.</p>
-        </div>
-        
-        `, // html body
-    },
-    function (error, info) {
-      if (error) {
-        console.log('Email send error', error);
-      } else {
-        console.log('Email sent: ' + info);
-      }
-    }
-  );
-}
-
 function verifyJWT(req, res, next) {
   const authHeader = req.headers.authorization;
   if (!authHeader) {
@@ -90,7 +43,6 @@ function verifyJWT(req, res, next) {
 
 async function run() {
   try {
-    await client.connect();
     const appointmentOptionCollection = client
       .db('GetwayToDoc')
       .collection('appointmentOptions');
